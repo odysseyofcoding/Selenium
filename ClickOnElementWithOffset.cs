@@ -1,7 +1,7 @@
 public static Random offsetRandom = new Random();
 public static Actions moveToElement = new Actions(driver);
 
-public static void ClickOnElement(string pathToElement, string messeage)
+public static void ClickOnElement(string pathToElement)
 {
 
   moveToElement.Reset();
