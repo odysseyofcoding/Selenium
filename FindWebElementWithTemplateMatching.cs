@@ -28,7 +28,8 @@ namespace YourProgram
                     var original = screenshot
                         .ToImage<Bgr, byte>();
                     var template = item.ToImage<Bgr, byte>();
-
+                    
+                    // Match template first time
                     Mat imgOut = new Mat();
                     CvInvoke.MatchTemplate(original, template, imgOut, Emgu.CV.CvEnum.TemplateMatchingType.Sqdiff);
 
@@ -38,18 +39,18 @@ namespace YourProgram
                     Matrix<double> matches = new Matrix<double>(imgOutNorm.Size);
                     imgOutNorm.CopyTo(matches);
 
-                    double minValue = 0, maxVal = 0;
+                    double minValue = 0, maxValue = 0;
                     Point minLoc = new Point();
                     Point maxLoc = new Point();
                     
                     // Get the Locations for drawing on the original image
-                    CvInvoke.MinMaxLoc(matches, ref minValue, ref maxVal, ref minLoc, ref maxLoc);
+                    CvInvoke.MinMaxLoc(matches, ref minValue, ref maxValue, ref minLoc, ref maxLoc);
                     Rectangle r = new Rectangle(minLoc, template.Size);
                     
                     //store a copy of original into a temporary variable to compare it with the template
                     var temporaryImage = original.Copy();
                     
-                    //crops the image at the detected location before comparing
+                    //crops the image at the detected location before counter comparing because if the template will not be displayed the first matching will return a false rectangle
                     temporaryImage.ROI = r;
                     CvInvoke.cvResetImageROI(temporaryImage);
                     
